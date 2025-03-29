@@ -7,6 +7,7 @@ import (
 
 func RegisterRoutes() *mux.Router {
 	r := mux.NewRouter()
+	r.HandleFunc("/register", controllers.Register).Methods("POST")
 	r.HandleFunc("/login", controllers.Login).Methods("POST")
 	r.HandleFunc("/payment", controllers.Payment).Methods("POST")
 	r.HandleFunc("/logout", controllers.Logout).Methods("POST")

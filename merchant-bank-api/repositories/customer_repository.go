@@ -6,7 +6,49 @@ import (
 	"os"
 
 	"github.com/rsn98/merchant-bank-api/models"
+	"golang.org/x/crypto/bcrypt"
 )
+
+// Fungsi untuk mendaftarkan customer baru
+func RegisterCustomer(name, email, password string) error {
+	customers, err := GetCustomers()
+	if err != nil {
+		return err
+	}
+
+	// Cek apakah email sudah digunakan
+	for _, c := range customers {
+		if c.Email == email {
+			return errors.New("email already exists")
+		}
+	}
+
+	// Hash password sebelum disimpan
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	// Buat customer baru
+	newCustomer := models.Customer{
+		ID:       len(customers) + 1,
+		Name:     name,
+		Email:    email,
+		Password: string(hashedPassword),
+		IsLoggedIn: false,
+	}
+
+	// Tambahkan ke daftar customer
+	customers = append(customers, newCustomer)
+
+	// Simpan ke JSON
+	data, err := json.MarshalIndent(customers, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile("data/customers.json", data, 0644)
+}
 
 // Fungsi untuk membaca semua pelanggan dari JSON
 func GetCustomers() ([]models.Customer, error) {

@@ -5,5 +5,12 @@
     "email": "",
     "password": "",
     "is_logged_in": false
+  },
+  {
+    "id": 2,
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "$2a$10$ohrUoHPgY.j/Ms776AqEkuXeDNgu1cEce5W9Mdo/xvjxnJ69tLZQO",
+    "is_logged_in": false
   }
 ]
